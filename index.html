@@ -1,0 +1,2420 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NLD • Next Level Daily</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --c: #00FFD1;
+            --c2: #7B5EA7;
+            --red: #FF3B3B;
+            --dark: #080808;
+            --dark2: #0f0f0f;
+            --dark3: #141414;
+            --dark4: #1a1a1a;
+            --border: rgba(255,255,255,0.08);
+            --text-muted: rgba(255,255,255,0.45);
+            --font-head: 'Syne', sans-serif;
+            --font-mono: 'DM Mono', monospace;
+            --font-body: 'DM Sans', sans-serif;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--dark);
+            color: #fff;
+            font-family: var(--font-body);
+            font-weight: 300;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* === NAVBAR === */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 0 40px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(8,8,8,0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            z-index: 1100;
+            position: relative;
+        }
+
+        .logo-mark {
+            font-family: var(--font-head);
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: #fff;
+        }
+
+        .logo-sub {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            color: var(--c);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--c); }
+
+        .nav-actions { display: flex; gap: 12px; align-items: center; }
+
+        .btn-ghost {
+            padding: 8px 20px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            background: transparent;
+            color: rgba(255,255,255,0.7);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-ghost:hover { border-color: var(--c); color: var(--c); }
+
+        .btn-primary {
+            padding: 9px 22px;
+            border-radius: 100px;
+            background: var(--c);
+            color: #000;
+            font-family: var(--font-head);
+            font-size: 12px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+        }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,255,209,0.3); }
+
+        /* === BURGER MENU BUTTON === */
+        .burger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            z-index: 1100;
+            position: relative;
+            transition: border-color 0.2s;
+        }
+        .burger:hover { border-color: var(--c); }
+
+        .burger span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: #fff;
+            border-radius: 2px;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+
+        /* Burger → X animation */
+        .burger.open span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+        .burger.open span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .burger.open span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        /* === MOBILE MENU OVERLAY === */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            inset: 0;
+            top: 72px;
+            background: rgba(8,8,8,0.97);
+            backdrop-filter: blur(24px);
+            z-index: 999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            padding: 40px 24px 60px;
+            opacity: 0;
+            transform: translateY(-12px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+        }
+
+        .mobile-menu.open {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .mobile-menu ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
+            max-width: 360px;
+            margin-bottom: 40px;
+        }
+
+        .mobile-menu ul li {
+            width: 100%;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .mobile-menu ul li:first-child {
+            border-top: 1px solid var(--border);
+        }
+
+        .mobile-menu ul a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 4px;
+            font-family: var(--font-head);
+            font-size: 22px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.75);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            transition: color 0.2s, padding-left 0.2s;
+        }
+
+        .mobile-menu ul a::after {
+            content: '→';
+            font-size: 16px;
+            color: var(--c);
+            opacity: 0;
+            transform: translateX(-6px);
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        .mobile-menu ul a:hover {
+            color: #fff;
+            padding-left: 8px;
+        }
+        .mobile-menu ul a:hover::after {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .mobile-menu .mobile-actions {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+            max-width: 360px;
+        }
+
+        .mobile-menu .mobile-actions button {
+            flex: 1;
+            padding: 14px;
+            border-radius: 14px;
+            font-family: var(--font-head);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mobile-menu .mobile-actions .btn-ghost-m {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: rgba(255,255,255,0.7);
+        }
+        .mobile-menu .mobile-actions .btn-ghost-m:hover {
+            border-color: var(--c);
+            color: var(--c);
+        }
+
+        .mobile-menu .mobile-actions .btn-primary-m {
+            background: var(--c);
+            border: none;
+            color: #000;
+        }
+        .mobile-menu .mobile-actions .btn-primary-m:hover {
+            background: #fff;
+        }
+
+        .mobile-menu-tag {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--c);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .mobile-menu-tag::before {
+            content: '';
+            display: block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--c);
+            animation: pulse-dot 2s infinite;
+        }
+
+        /* === HERO === */
+        #hero {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            padding-top: 72px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hero-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,255,209,0.08) 0%, transparent 70%);
+            top: 50%;
+            left: 25%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px 60px 80px 80px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--c);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+        }
+
+        .hero-tag::before {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--c);
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        .hero-h1 {
+            font-family: var(--font-head);
+            font-size: clamp(64px, 8vw, 96px);
+            font-weight: 800;
+            line-height: 0.92;
+            letter-spacing: -3px;
+            margin-bottom: 28px;
+        }
+
+        .hero-h1 span {
+            -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+            color: transparent;
+            display: block;
+        }
+
+        .hero-desc {
+            font-size: 17px;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.7;
+            max-width: 420px;
+            margin-bottom: 48px;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-main {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 36px;
+            background: var(--c);
+            color: #000;
+            font-family: var(--font-head);
+            font-weight: 800;
+            font-size: 14px;
+            letter-spacing: 1px;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .cta-main:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,255,209,0.3);
+        }
+
+        .cta-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 28px;
+            border: 1px solid var(--border);
+            color: rgba(255,255,255,0.6);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            letter-spacing: 1px;
+            border-radius: 14px;
+            background: transparent;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+        .cta-secondary:hover { border-color: rgba(255,255,255,0.3); color: #fff; }
+
+        .hero-stats {
+            display: flex;
+            gap: 48px;
+            margin-top: 64px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat-num {
+            font-family: var(--font-head);
+            font-size: 28px;
+            font-weight: 800;
+            color: #fff;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-family: var(--font-mono);
+            letter-spacing: 0.5px;
+        }
+
+        /* === HERO RIGHT === */
+        .hero-right {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-right::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to left, transparent 40%, var(--dark) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .hero-main-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+            filter: saturate(0.8);
+        }
+
+        .hero-badge {
+            position: absolute;
+            bottom: 60px;
+            right: 40px;
+            z-index: 3;
+            background: rgba(8,8,8,0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px 24px;
+            width: 280px;
+        }
+
+        .hero-badge-game { font-family: var(--font-head); font-size: 22px; font-weight: 800; }
+        .hero-badge-dev { font-family: var(--font-mono); font-size: 11px; color: var(--c); margin-top: 4px; }
+        .hero-badge-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+        }
+        .hero-badge-score {
+            font-family: var(--font-head);
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--c);
+        }
+        .hero-badge-score sup { font-size: 16px; color: var(--text-muted); }
+        .hero-badge-btn {
+            padding: 10px 20px;
+            background: #fff;
+            color: #000;
+            font-family: var(--font-head);
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: background 0.2s;
+        }
+        .hero-badge-btn:hover { background: var(--c); }
+
+        .hero-live {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(8,8,8,0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 8px 16px;
+        }
+        .hero-live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--red); animation: pulse-dot 1.5s infinite; }
+        .hero-live-text { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; color: rgba(255,255,255,0.7); }
+
+        /* === TICKER === */
+        .ticker {
+            background: var(--dark2);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .ticker-inner {
+            display: flex;
+            gap: 60px;
+            animation: scroll-ticker 25s linear infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes scroll-ticker {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        .ticker-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        .ticker-item strong { color: #fff; font-weight: 500; }
+        .ticker-item .score-badge {
+            background: rgba(0,255,209,0.1);
+            color: var(--c);
+            padding: 3px 10px;
+            border-radius: 100px;
+            font-size: 11px;
+        }
+        .ticker-sep { color: var(--border); font-size: 18px; }
+
+        /* === SECTION COMMON === */
+        section { padding: 100px 0; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 60px; }
+
+        .sec-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--c);
+            margin-bottom: 14px;
+        }
+
+        .sec-title {
+            font-family: var(--font-head);
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -2px;
+        }
+
+        .sec-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 52px;
+        }
+
+        .see-all {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--c);
+            text-decoration: none;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: gap 0.2s;
+        }
+        .see-all:hover { gap: 10px; }
+
+        /* === NEWS === */
+        #news { background: var(--dark2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr 1fr;
+            gap: 2px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .news-card {
+            background: var(--dark3);
+            padding: 32px;
+            cursor: pointer;
+            transition: background 0.2s;
+            position: relative;
+        }
+        .news-card:hover { background: var(--dark4); }
+        .news-card:first-child { border-right: 1px solid var(--border); }
+
+        .news-tag {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 100px;
+            margin-bottom: 20px;
+        }
+
+        .news-tag.breaking { background: rgba(255,59,59,0.1); color: var(--red); }
+        .news-tag.steam { background: rgba(0,255,209,0.08); color: var(--c); }
+        .news-tag.update { background: rgba(123,94,167,0.15); color: #B895FF; }
+
+        .news-date { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
+
+        .news-card h4 {
+            font-family: var(--font-head);
+            font-weight: 700;
+            line-height: 1.25;
+            margin: 10px 0 14px;
+        }
+
+        .news-card:first-child h4 { font-size: 26px; }
+        .news-card h4 { font-size: 18px; }
+
+        .news-card p { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.65; }
+
+        .news-read {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--c);
+            letter-spacing: 1.5px;
+            margin-top: 24px;
+            text-transform: uppercase;
+        }
+
+        .news-mini-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .news-mini-cards .news-card { flex: 1; }
+
+        /* === FEATURED === */
+        #featured { background: var(--dark); }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .game-card {
+            background: var(--dark3);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+        .game-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            border-color: rgba(255,255,255,0.15);
+            box-shadow: 0 24px 48px rgba(0,0,0,0.5);
+        }
+
+        .game-thumb {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            filter: saturate(0.85);
+            transition: filter 0.3s, transform 0.5s;
+        }
+        .game-card:hover .game-thumb { filter: saturate(1.1); transform: scale(1.03); }
+
+        .game-thumb-wrap { overflow: hidden; }
+
+        .game-info { padding: 20px; }
+        .game-title {
+            font-family: var(--font-head);
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .game-dev { font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); }
+
+        .game-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border);
+        }
+
+        .game-score {
+            font-family: var(--font-head);
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--c);
+        }
+
+        .game-platform {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-muted);
+            background: rgba(255,255,255,0.05);
+            padding: 4px 10px;
+            border-radius: 100px;
+        }
+
+        .game-rank {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: rgba(0,0,0,0.8);
+            background: var(--c);
+            padding: 3px 10px;
+            border-radius: 100px;
+            font-weight: 500;
+        }
+
+        /* === NEW GAMES === */
+        #new-games { background: var(--dark2); border-top: 1px solid var(--border); }
+
+        .new-games-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .new-game-card {
+            background: var(--dark3);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .new-game-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0,255,209,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,255,209,0.1);
+        }
+
+        .new-game-thumb {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .new-game-thumb img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s;
+        }
+        .new-game-card:hover .new-game-thumb img { transform: scale(1.05); }
+
+        .new-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: #00E5A0;
+            color: #000;
+            font-family: var(--font-mono);
+            font-size: 9px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            padding: 4px 12px;
+            border-radius: 100px;
+            text-transform: uppercase;
+        }
+
+        .new-game-body { padding: 24px; }
+
+        .new-game-title {
+            font-family: var(--font-head);
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .new-game-dev {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: #00E5A0;
+        }
+
+        .new-game-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 20px;
+        }
+
+        .new-score {
+            font-family: var(--font-head);
+            font-size: 44px;
+            font-weight: 800;
+            color: #00E5A0;
+            line-height: 1;
+        }
+
+        .new-platforms {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-muted);
+            background: rgba(255,255,255,0.05);
+            padding: 6px 14px;
+            border-radius: 100px;
+            text-align: right;
+        }
+
+        /* === REVIEWS === */
+        #reviews { background: var(--dark); }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .review-card {
+            background: var(--dark3);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 36px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            transition: border-color 0.2s;
+        }
+        .review-card:hover { border-color: rgba(123,94,167,0.4); }
+
+        .review-header { display: flex; justify-content: space-between; align-items: flex-start; }
+
+        .review-score {
+            font-family: var(--font-head);
+            font-size: 72px;
+            font-weight: 800;
+            line-height: 1;
+            color: transparent;
+            -webkit-text-stroke: 2px rgba(255,255,255,0.15);
+        }
+
+        .review-title {
+            font-family: var(--font-head);
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .review-meta { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
+        .review-quote { font-size: 16px; line-height: 1.7; color: rgba(255,255,255,0.65); font-style: italic; }
+        .review-author { font-family: var(--font-mono); font-size: 11px; color: var(--c); }
+
+        /* === TOP === */
+        #top { background: var(--dark2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+        .top-list { display: flex; flex-direction: column; gap: 4px; }
+
+        .top-item {
+            display: grid;
+            grid-template-columns: 80px 1fr auto;
+            align-items: center;
+            gap: 24px;
+            padding: 24px 32px;
+            background: var(--dark3);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .top-item:hover { background: var(--dark4); border-color: rgba(255,255,255,0.12); transform: translateX(4px); }
+
+        .top-num {
+            font-family: var(--font-head);
+            font-size: 48px;
+            font-weight: 800;
+            color: rgba(255,255,255,0.06);
+            line-height: 1;
+        }
+
+        .top-name { font-family: var(--font-head); font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+        .top-meta { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
+
+        .top-right { text-align: right; }
+        .top-score { font-family: var(--font-head); font-size: 28px; font-weight: 800; color: var(--c); }
+        .top-players { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); margin-top: 4px; }
+
+        /* === GENRES & PLATFORMS === */
+        #genres-platforms { background: var(--dark); }
+
+        .gp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+
+        .genre-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .genre-item {
+            background: var(--dark3);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px 22px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .genre-item:hover { background: var(--dark4); border-color: rgba(255,255,255,0.12); }
+
+        .genre-name { font-family: var(--font-head); font-size: 15px; font-weight: 700; }
+        .genre-count { font-family: var(--font-mono); font-size: 11px; color: var(--c); margin-top: 4px; }
+
+        .platform-list { display: flex; flex-direction: column; gap: 12px; }
+
+        .platform-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            background: var(--dark3);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .platform-item:hover { background: var(--dark4); }
+
+        .platform-left { display: flex; align-items: center; gap: 16px; }
+        .platform-icon { font-size: 22px; color: var(--c); width: 32px; }
+        .platform-name { font-family: var(--font-head); font-size: 16px; font-weight: 700; }
+
+        .platform-count { font-family: var(--font-mono); font-size: 11px; color: var(--c); }
+
+        .platform-bar {
+            height: 3px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 100px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        .platform-bar-fill { height: 100%; background: var(--c); border-radius: 100px; }
+
+        /* === UPCOMING === */
+        #upcoming { background: var(--dark2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+        .upcoming-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+        .upcoming-card {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            min-height: 360px;
+            cursor: pointer;
+            border: 1px solid var(--border);
+        }
+
+        .upcoming-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.5s;
+        }
+        .upcoming-card:hover .upcoming-bg { transform: scale(1.04); }
+
+        .upcoming-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.5) 50%, rgba(8,8,8,0.2) 100%);
+        }
+
+        .upcoming-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 36px;
+        }
+
+        .upcoming-date {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--c);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .upcoming-title {
+            font-family: var(--font-head);
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .upcoming-dev { font-family: var(--font-mono); font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 24px; }
+
+        .countdown { display: flex; gap: 12px; }
+
+        .countdown-unit {
+            background: rgba(8,8,8,0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            text-align: center;
+            min-width: 64px;
+        }
+
+        .countdown-num {
+            font-family: var(--font-head);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--c);
+            line-height: 1;
+        }
+
+        .countdown-label {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            margin-top: 4px;
+            text-transform: uppercase;
+        }
+
+        /* === COMMUNITY === */
+        #community {
+            background: var(--dark);
+            text-align: center;
+        }
+
+        .community-inner { max-width: 720px; margin: 0 auto; }
+
+        .community-orbs {
+            position: relative;
+            height: 200px;
+            margin-bottom: 48px;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .orb img { width: 100%; height: 100%; object-fit: cover; }
+
+        .community-title {
+            font-family: var(--font-head);
+            font-size: 56px;
+            font-weight: 800;
+            letter-spacing: -2px;
+            line-height: 1;
+            margin-bottom: 16px;
+        }
+
+        .community-desc {
+            font-size: 17px;
+            color: rgba(255,255,255,0.45);
+            line-height: 1.7;
+            margin-bottom: 40px;
+        }
+
+        .community-nums {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            margin-bottom: 48px;
+        }
+
+        .comm-num { font-family: var(--font-head); font-size: 32px; font-weight: 800; }
+        .comm-label { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+        .online-dot { width: 8px; height: 8px; border-radius: 50%; background: #00FF85; display: inline-block; margin-right: 4px; animation: pulse-dot 1.5s infinite; }
+
+        /* === FOOTER === */
+        footer {
+            background: var(--dark2);
+            border-top: 1px solid var(--border);
+            padding: 60px;
+        }
+
+        .footer-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+        }
+
+        .footer-brand .logo-mark { font-size: 32px; margin-bottom: 8px; display: block; }
+        .footer-brand p { font-size: 13px; color: var(--text-muted); line-height: 1.7; max-width: 260px; margin-top: 14px; }
+
+        .footer-col h5 {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .footer-col a {
+            display: block;
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            margin-bottom: 10px;
+            transition: color 0.2s;
+        }
+        .footer-col a:hover { color: var(--c); }
+
+        .footer-bottom {
+            max-width: 1280px;
+            margin: 40px auto 0;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-copy { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
+
+        .footer-socials { display: flex; gap: 20px; }
+        .footer-socials a {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .footer-socials a:hover { color: var(--c); }
+
+        /* === MODAL === */
+        .modal-bg {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.92);
+            backdrop-filter: blur(16px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+        .modal-bg.open { display: flex; }
+
+        .modal-box {
+            background: var(--dark3);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            overflow: hidden;
+            max-width: 640px;
+            width: 100%;
+        }
+
+        .modal-img {
+            height: 320px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .modal-img::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 120px;
+            background: linear-gradient(to top, var(--dark3), transparent);
+        }
+
+        .modal-body { padding: 32px; }
+
+        .modal-title { font-family: var(--font-head); font-size: 32px; font-weight: 800; margin-bottom: 4px; }
+        .modal-dev { font-family: var(--font-mono); font-size: 12px; color: var(--c); }
+        .modal-score-wrap { font-family: var(--font-head); font-size: 56px; font-weight: 800; color: var(--c); }
+
+        .modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+        .modal-desc { font-size: 15px; color: rgba(255,255,255,0.55); line-height: 1.7; margin-bottom: 28px; }
+
+        .modal-actions { display: flex; gap: 12px; }
+        .modal-btn-main {
+            flex: 1;
+            padding: 14px;
+            background: var(--c);
+            color: #000;
+            font-family: var(--font-head);
+            font-weight: 800;
+            font-size: 13px;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .modal-btn-main:hover { background: #fff; }
+
+        .modal-btn-close {
+            flex: 1;
+            padding: 14px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: rgba(255,255,255,0.6);
+            font-family: var(--font-head);
+            font-size: 13px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .modal-btn-close:hover { border-color: rgba(255,255,255,0.3); color: #fff; }
+
+        /* === LOGIN MODAL === */
+        .login-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.92);
+            backdrop-filter: blur(20px);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-modal.open { display: flex; }
+
+        .login-box {
+            background: var(--dark3);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            padding: 48px;
+            max-width: 420px;
+            width: 100%;
+        }
+
+        .login-logo { font-family: var(--font-head); font-size: 36px; font-weight: 800; margin-bottom: 4px; }
+        .login-sub { font-family: var(--font-mono); font-size: 11px; color: var(--c); letter-spacing: 2px; margin-bottom: 36px; }
+
+        .login-label {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .login-input {
+            width: 100%;
+            background: var(--dark);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 16px;
+            color: #fff;
+            font-family: var(--font-mono);
+            font-size: 14px;
+            margin-bottom: 20px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .login-input:focus { border-color: rgba(0,255,209,0.4); }
+
+        .login-submit {
+            width: 100%;
+            padding: 16px;
+            background: var(--c);
+            color: #000;
+            font-family: var(--font-head);
+            font-weight: 800;
+            font-size: 14px;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+        .login-submit:hover { background: #fff; transform: translateY(-1px); }
+
+        .login-close-btn {
+            position: absolute;
+            top: 20px; right: 20px;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .login-close-btn:hover { border-color: rgba(255,255,255,0.3); color: #fff; }
+
+        /* === TOAST === */
+        .toast {
+            position: fixed;
+            bottom: 36px; right: 36px;
+            z-index: 9000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 24px;
+            background: var(--c);
+            color: #000;
+            font-family: var(--font-head);
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 16px;
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+
+        /* === SCROLL ANIMATIONS === */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        /* ============================================
+           RESPONSIVE STYLES
+           ============================================ */
+
+        /* Tablet: 768px - 1024px */
+        @media (max-width: 1024px) {
+            nav { padding: 0 24px; }
+            .nav-links { gap: 20px; }
+            .nav-links a { font-size: 10px; }
+
+            .hero-left { padding: 60px 40px 60px 40px; }
+            .container { padding: 0 32px; }
+
+            .games-grid { grid-template-columns: repeat(2, 1fr); }
+            .new-games-grid { grid-template-columns: repeat(2, 1fr); }
+            .gp-grid { gap: 40px; }
+
+            .footer-inner { grid-template-columns: 1fr 1fr; gap: 40px; }
+        }
+
+        /* Mobile: < 768px */
+        @media (max-width: 768px) {
+            /* NAV */
+            nav { padding: 0 20px; }
+
+            .nav-links { display: none; }
+            .nav-actions { display: none; }
+            .burger { display: flex; }
+
+            /* HERO */
+            #hero {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+
+            .hero-right { display: none; }
+
+            .hero-left {
+                padding: 48px 20px 60px;
+                align-items: flex-start;
+            }
+
+            .hero-h1 {
+                font-size: clamp(52px, 14vw, 72px);
+                letter-spacing: -2px;
+            }
+
+            .hero-desc { font-size: 15px; max-width: 100%; }
+
+            .hero-stats {
+                gap: 28px;
+                flex-wrap: wrap;
+            }
+
+            .hero-stats .stat-num { font-size: 22px; }
+
+            /* CONTAINER */
+            .container { padding: 0 20px; }
+            section { padding: 60px 0; }
+
+            /* NEWS */
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+            .news-card:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+            .news-mini-cards { gap: 0; }
+            .news-mini-cards .news-card { border-top: 1px solid var(--border); }
+
+            /* FEATURED GAMES */
+            .games-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+            .game-thumb { height: 140px; }
+            .game-title { font-size: 14px; }
+            .game-info { padding: 14px; }
+
+            /* NEW GAMES */
+            .new-games-grid { grid-template-columns: 1fr; }
+
+            /* REVIEWS */
+            .reviews-grid { grid-template-columns: 1fr; }
+            .review-card { padding: 24px; }
+            .review-score { font-size: 52px; }
+
+            /* TOP */
+            .top-item {
+                grid-template-columns: 50px 1fr auto;
+                gap: 12px;
+                padding: 18px 16px;
+            }
+            .top-num { font-size: 32px; }
+            .top-name { font-size: 15px; }
+            .top-score { font-size: 22px; }
+            .top-players { font-size: 9px; }
+
+            /* GENRES & PLATFORMS */
+            .gp-grid { grid-template-columns: 1fr; gap: 48px; }
+            .genre-grid { grid-template-columns: 1fr 1fr; }
+
+            /* UPCOMING */
+            .upcoming-grid { grid-template-columns: 1fr; }
+            .upcoming-title { font-size: 26px; }
+            .countdown-unit { min-width: 52px; padding: 10px 12px; }
+            .countdown-num { font-size: 22px; }
+
+            /* COMMUNITY */
+            .community-orbs { display: none; }
+            .community-title { font-size: 36px; letter-spacing: -1px; }
+            .community-nums { gap: 24px; flex-wrap: wrap; justify-content: center; }
+
+            /* FOOTER */
+            footer { padding: 40px 20px; }
+            .footer-inner {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            /* MODAL */
+            .modal-bg { padding: 16px; }
+            .modal-img { height: 220px; }
+            .modal-body { padding: 20px; }
+            .modal-title { font-size: 22px; }
+
+            /* LOGIN */
+            .login-box { padding: 32px 24px; margin: 0 16px; }
+
+            /* TOAST */
+            .toast { right: 16px; left: 16px; bottom: 20px; }
+
+            /* SEC HEADER */
+            .sec-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .sec-title { letter-spacing: -1px; }
+        }
+
+        /* Very small screens */
+        @media (max-width: 420px) {
+            .games-grid { grid-template-columns: 1fr; }
+            .genre-grid { grid-template-columns: 1fr; }
+            .hero-cta { flex-direction: column; align-items: flex-start; }
+            .hero-cta .cta-main, .hero-cta .cta-secondary { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+    <div class="logo">
+        <div class="logo-mark">NLD</div>
+        <div class="logo-sub">Next Level Daily</div>
+    </div>
+
+    <!-- Desktop nav links -->
+    <ul class="nav-links">
+        <li><a href="#hero">Нүүр</a></li>
+        <li><a href="#news">Мэдээ</a></li>
+        <li><a href="#new-games">Шинэ</a></li>
+        <li><a href="#reviews">Шүүмж</a></li>
+        <li><a href="#top">Топ</a></li>
+        <li><a href="#upcoming">Ирээдүй</a></li>
+        <li><a href="#community">Нийгэмлэг</a></li>
+    </ul>
+
+    <!-- Desktop action buttons -->
+    <div class="nav-actions">
+        <button class="btn-ghost" onclick="openLogin()">Нэвтрэх</button>
+        <button class="btn-ghost" onclick="openRegister()" style="border-color: var(--c); color: var(--c);">Бүртгүүлэх</button>
+        <button class="btn-primary" onclick="document.getElementById('community').scrollIntoView({behavior:'smooth'})">Нэгдэх</button>
+    </div>
+
+    <!-- Burger button (mobile only) -->
+    <button class="burger" id="burgerBtn" onclick="toggleMenu()" aria-label="Цэс нээх">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+</nav>
+
+<!-- Mobile menu overlay -->
+<div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-tag">Next Level Daily</div>
+    <ul>
+        <li><a href="#hero" onclick="closeMenu()">Нүүр</a></li>
+        <li><a href="#news" onclick="closeMenu()">Мэдээ</a></li>
+        <li><a href="#new-games" onclick="closeMenu()">Шинэ тоглоомууд</a></li>
+        <li><a href="#reviews" onclick="closeMenu()">Шүүмж</a></li>
+        <li><a href="#top" onclick="closeMenu()">Топ тоглоомууд</a></li>
+        <li><a href="#upcoming" onclick="closeMenu()">Ирэхэд хүлээж буй</a></li>
+        <li><a href="#community" onclick="closeMenu()">Нийгэмлэг</a></li>
+    </ul>
+    <div class="mobile-actions">
+        <button class="btn-ghost-m" onclick="closeMenu(); openLogin();">Нэвтрэх</button>
+        <button class="btn-ghost-m" onclick="closeMenu(); openRegister();" style="border-color: var(--c); color: var(--c);">Бүртгүүлэх</button>
+        <button class="btn-primary-m" onclick="closeMenu(); document.getElementById('community').scrollIntoView({behavior:'smooth'});">Нэгдэх</button>
+    </div>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-left">
+        <div class="hero-tag">Live Updates • Монголын №1 Gaming Platform</div>
+
+        <h1 class="hero-h1">
+            ТОГЛООМ
+            <span>ШИНЭ</span>
+            <span>ТҮВШИНД</span>
+        </h1>
+
+        <p class="hero-desc">Өдөр бүр шилдэг тоглоомын мэдээлэл, гүнзгий шүүмж, шинэчлэл — нэг дороос.</p>
+
+        <div class="hero-cta">
+            <button class="cta-main" onclick="document.getElementById('new-games').scrollIntoView({behavior:'smooth'})">
+                <i class="fa-solid fa-play" style="font-size:12px"></i>
+                Эхлүүлэх
+            </button>
+            <button class="cta-secondary" onclick="document.getElementById('news').scrollIntoView({behavior:'smooth'})">
+                Мэдээ үзэх
+                <i class="fa-solid fa-arrow-right" style="font-size:11px"></i>
+            </button>
+        </div>
+
+        <div class="hero-stats">
+            <div class="stat-item">
+                <div class="stat-num">142k</div>
+                <div class="stat-label">Нийт гишүүн</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">4.98 ★</div>
+                <div class="stat-label">Дундаж үнэлгээ</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">2,400+</div>
+                <div class="stat-label">Шүүмж</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-right">
+        <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1000&q=80" alt="Gaming" class="hero-main-img">
+        <div class="hero-live">
+            <div class="hero-live-dot"></div>
+            <span class="hero-live-text">2.4M ҮЗЭЛТ</span>
+        </div>
+        <div class="hero-badge">
+            <div class="hero-badge-game">GTA VI</div>
+            <div class="hero-badge-dev">Rockstar • 2026.05.15</div>
+            <div class="hero-badge-row">
+                <div class="hero-badge-score">9.8<sup>/10</sup></div>
+                <button class="hero-badge-btn" onclick="showGame(0)">▶ ТРАЙЛЕР</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--oniinii heseg -->
+<div class="ticker">
+    <div class="ticker-inner" id="ticker">
+        <div class="ticker-item"><strong>GTA VI</strong> Rockstar <span class="score-badge">9.8</span></div>
+        <div class="ticker-sep">·</div>
+        <div class="ticker-item"><strong>Black Myth: Wukong</strong> Game Science <span class="score-badge">9.4</span></div>
+        <div class="ticker-sep">·</div>
+        <div class="ticker-item"><strong>Elden Ring: Shadow</strong> FromSoftware <span class="score-badge">9.6</span></div>
+        <div class="ticker-sep">·</div>
+        <div class="ticker-item"><strong>Monster Hunter Wilds</strong> Capcom <span class="score-badge">9.5</span></div>
+        <div class="ticker-sep">·</div>
+        <div class="ticker-item"><strong>Stellar Blade 2</strong> Shift Up <span class="score-badge">9.7</span></div>
+        <div class="ticker-sep">·</div>
+        <div class="ticker-item"><strong>Baldur's Gate 3</strong> Larian <span class="score-badge">9.6</span></div>
+        <div class="ticker-sep">·</div>
+        <div class="ticker-item"><strong>GTA VI</strong> Rockstar <span class="score-badge">9.8</span></div>
+        <div class="ticker-sep">·</div>
+        <div class="ticker-item"><strong>Black Myth: Wukong</strong> Game Science <span class="score-badge">9.4</span></div>
+        <div class="ticker-sep">·</div>
+        <div class="ticker-item"><strong>Elden Ring: Shadow</strong> FromSoftware <span class="score-badge">9.6</span></div>
+        <div class="ticker-sep">·</div>
+        <div class="ticker-item"><strong>Monster Hunter Wilds</strong> Capcom <span class="score-badge">9.5</span></div>
+        <div class="ticker-sep">·</div>
+        <div class="ticker-item"><strong>Stellar Blade 2</strong> Shift Up <span class="score-badge">9.7</span></div>
+        <div class="ticker-sep">·</div>
+        <div class="ticker-item"><strong>Baldur's Gate 3</strong> Larian <span class="score-badge">9.6</span></div>
+    </div>
+</div>
+
+<!-- medee -->
+<section id="news">
+    <div class="container">
+        <div class="sec-header fade-up">
+            <div>
+                <div class="sec-eyebrow">● Live Updates</div>
+                <h2 class="sec-title">Сүүлийн мэдээ</h2>
+            </div>
+            <a href="#" class="see-all">Бүх мэдээ →</a>
+        </div>
+        <div class="news-grid fade-up">
+            <div class="news-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px">
+                    <span class="news-tag breaking">Breaking</span>
+                    <span class="news-date">Өнөөдөр · 14:32</span>
+                </div>
+                <h4>GTA VI-ийн шинэ трейлер 10 сая үзэлт давлаа</h4>
+                <p>Vice City хотын шинэ дүр төрх, Jason болон Lucia-гийн гэмт хэргийн романтик түүх. Rockstar тоглоомын агуулгын 40%-ийг нууцлан хадгалж байна.</p>
+                <div class="news-read">Цааш унших <i class="fa-solid fa-arrow-right" style="font-size:9px"></i></div>
+            </div>
+            <div class="news-mini-cards">
+                <div class="news-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
+                        <span class="news-tag steam">Steam</span>
+                        <span class="news-date">Өчигдөр</span>
+                    </div>
+                    <h4>Steam Deck 2 албан ёсоор зарлагдлаа</h4>
+                    <p>Valve компани шинэ гар консолоо таниулж, захиалга авч эхэллээ.</p>
+                    <div class="news-read">Цааш унших <i class="fa-solid fa-arrow-right" style="font-size:9px"></i></div>
+                </div>
+                <div class="news-card" style="border-top: 1px solid var(--border)">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
+                        <span class="news-tag update">Update</span>
+                        <span class="news-date">2 өдрийн өмнө</span>
+                    </div>
+                    <h4>Minecraft 1.22 "The End Update" гарлаа</h4>
+                    <p>Mojang хамгийн том шинэчлэлийг хүргэлээ.</p>
+                    <div class="news-read">Цааш унших <i class="fa-solid fa-arrow-right" style="font-size:9px"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- goltsuu togloom -->
+<section id="featured">
+    <div class="container">
+        <div class="sec-header fade-up">
+            <div>
+                <div class="sec-eyebrow">This Week</div>
+                <h2 class="sec-title">Онцлох тоглоомууд</h2>
+            </div>
+            <a href="#new-games" class="see-all">Бүгдийг үзэх →</a>
+        </div>
+        <div class="games-grid">
+            <div class="game-card fade-up" onclick="showGame(0)" style="transition-delay:0s">
+                <div class="game-thumb-wrap">
+                    <img src="https://www.notebookcheck.net/fileadmin/Notebooks/News/_nc5/GTA6BannerwithCalHampton.jpg" class="game-thumb" alt="GTA VI">
+                </div>
+                <div class="game-rank">#1 HOT</div>
+                <div class="game-info">
+                    <div class="game-title">Grand Theft Auto VI</div>
+                    <div class="game-dev">Rockstar • 2026</div>
+                    <div class="game-footer">
+                        <div class="game-score">9.8</div>
+                        <div class="game-platform">PS5 • PC</div>
+                    </div>
+                </div>
+            </div>
+            <div class="game-card fade-up" onclick="showGame(1)" style="transition-delay:0.08s">
+                <div class="game-thumb-wrap">
+                    <img src="https://www.venturegames.com.pk/cdn/shop/files/BlackMythWokong.jpg?v=1733832480" class="game-thumb" alt="Black Myth">
+                </div>
+                <div class="game-info">
+                    <div class="game-title">Black Myth: Wukong</div>
+                    <div class="game-dev">Game Science • 2024</div>
+                    <div class="game-footer">
+                        <div class="game-score">9.4</div>
+                        <div class="game-platform">PC • PS5</div>
+                    </div>
+                </div>
+            </div>
+            <div class="game-card fade-up" onclick="showGame(2)" style="transition-delay:0.16s">
+                <div class="game-thumb-wrap">
+                    <img src="https://m.media-amazon.com/images/M/MV5BMWNlMDBiYzYtMWMyMC00Zjc5LTlhMjItMjRlMzBmYmVkOGM0XkEyXkFqcGc@._V1_QL75_UY281_CR4,0,190,281_.jpg" class="game-thumb" alt="Elden Ring">
+                </div>
+                <div class="game-info">
+                    <div class="game-title">Elden Ring: Shadow</div>
+                    <div class="game-dev">FromSoftware • 2024</div>
+                    <div class="game-footer">
+                        <div class="game-score">9.6</div>
+                        <div class="game-platform">PC • PS5</div>
+                    </div>
+                </div>
+            </div>
+            <div class="game-card fade-up" onclick="showGame(3)" style="transition-delay:0.24s">
+                <div class="game-thumb-wrap">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcrh_eU2rdvnde_iuNpgmx5OYXOVvhYLpddQ&s" class="game-thumb" alt="Helldivers 2">
+                </div>
+                <div class="game-info">
+                    <div class="game-title">Helldivers 2</div>
+                    <div class="game-dev">Arrowhead • 2024</div>
+                    <div class="game-footer">
+                        <div class="game-score">8.9</div>
+                        <div class="game-platform">PC • PS5</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- shine togloom -->
+<section id="new-games">
+    <div class="container">
+        <div class="sec-header fade-up">
+            <div>
+                <div class="sec-eyebrow" style="color:#00E5A0">Feb 2026 • Шинэ гарсан</div>
+                <h2 class="sec-title">Шинэ тоглоомууд</h2>
+            </div>
+        </div>
+        <div class="new-games-grid">
+            <div class="new-game-card fade-up" onclick="showGame(4)" style="transition-delay:0s">
+                <div class="new-game-thumb">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQE60I9gNyrUo7RUi0N0I-Qm_fIaCb9hdiag&s" alt="Stellar Blade 2">
+                    <span class="new-badge">● New</span>
+                </div>
+                <div class="new-game-body">
+                    <div class="new-game-title">Stellar Blade 2</div>
+                    <div class="new-game-dev">Shift Up • 2026.02.14</div>
+                    <div class="new-game-footer">
+                        <div class="new-score">9.7</div>
+                        <div class="new-platforms">PS5<br>PC</div>
+                    </div>
+                </div>
+            </div>
+            <div class="new-game-card fade-up" onclick="showGame(5)" style="transition-delay:0.1s">
+                <div class="new-game-thumb">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiTOfIqcP3s96mdqLDkLJWyLW8v4G2hibEKg&s" alt="Monster Hunter Wilds">
+                    <span class="new-badge">● New</span>
+                </div>
+                <div class="new-game-body">
+                    <div class="new-game-title">Monster Hunter Wilds</div>
+                    <div class="new-game-dev">Capcom • 2026.02.28</div>
+                    <div class="new-game-footer">
+                        <div class="new-score">9.5</div>
+                        <div class="new-platforms">PC<br>PS5 • Xbox</div>
+                    </div>
+                </div>
+            </div>
+            <div class="new-game-card fade-up" onclick="showGame(6)" style="transition-delay:0.2s">
+                <div class="new-game-thumb">
+                    <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2457220/capsule_616x353.jpg?t=1771352530" alt="Avowed">
+                    <span class="new-badge">● New</span>
+                </div>
+                <div class="new-game-body">
+                    <div class="new-game-title">Avowed</div>
+                    <div class="new-game-dev">Obsidian • 2026.02.18</div>
+                    <div class="new-game-footer">
+                        <div class="new-score">8.9</div>
+                        <div class="new-platforms">PC<br>Xbox</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- unelgee -->
+<section id="reviews">
+    <div class="container">
+        <div class="sec-header fade-up">
+            <div>
+                <div class="sec-eyebrow" style="color:#B895FF">Шүүмжлэгчдийн сонголт</div>
+                <h2 class="sec-title">Онцлох шүүмжүүд</h2>
+            </div>
+        </div>
+        <div class="reviews-grid">
+            <div class="review-card fade-up">
+                <div class="review-header">
+                    <div>
+                        <div class="review-title">Black Myth: Wukong</div>
+                        <div class="review-meta">Game Science • 2024 • Action RPG</div>
+                    </div>
+                    <div class="review-score">96</div>
+                </div>
+                <div class="review-quote">"Хамгийн гоёмсог тулааны системтэй, гайхамшигт харааны туршлагатай тоглоом. Хятадын тоглоомын аж үйлдвэрийн шинэ эрин үед тавих алхам."</div>
+                <div class="review-author">— М. Бат-Эрдэнэ, NLD Chief Editor</div>
+            </div>
+            <div class="review-card fade-up" style="transition-delay:0.1s">
+                <div class="review-header">
+                    <div>
+                        <div class="review-title">Elden Ring: Shadow</div>
+                        <div class="review-meta">FromSoftware • 2024 • Souls-like</div>
+                    </div>
+                    <div class="review-score">94</div>
+                </div>
+                <div class="review-quote">"FromSoftware-ийн хамгийн том бүтээл. Шинэ дэлхий, шинэ дайснууд, шинэ хувирал — энэ бол тоглоомын урлаг."</div>
+                <div class="review-author">— С. Ганбат, Senior Reviewer</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- shildeg togloom -->
+<section id="top">
+    <div class="container">
+        <div class="sec-header fade-up">
+            <div>
+                <div class="sec-eyebrow">All Time</div>
+                <h2 class="sec-title">Дэлхийн шилдэг тоглоомууд</h2>
+            </div>
+        </div>
+        <div class="top-list">
+            <div class="top-item fade-up" style="transition-delay:0s">
+                <div class="top-num">01</div>
+                <div class="top-info">
+                    <div class="top-name">The Legend of Zelda: Tears of the Kingdom</div>
+                    <div class="top-meta">Nintendo • 2023 • Adventure</div>
+                </div>
+                <div class="top-right">
+                    <div class="top-score">96</div>
+                    <div class="top-players">18.4M тоглогч</div>
+                </div>
+            </div>
+            <div class="top-item fade-up" style="transition-delay:0.06s">
+                <div class="top-num">02</div>
+                <div class="top-info">
+                    <div class="top-name">Elden Ring</div>
+                    <div class="top-meta">FromSoftware • 2022 • Souls-like</div>
+                </div>
+                <div class="top-right">
+                    <div class="top-score">96</div>
+                    <div class="top-players">25.1M тоглогч</div>
+                </div>
+            </div>
+            <div class="top-item fade-up" style="transition-delay:0.12s">
+                <div class="top-num">03</div>
+                <div class="top-info">
+                    <div class="top-name">Baldur's Gate 3</div>
+                    <div class="top-meta">Larian Studios • 2023 • RPG</div>
+                </div>
+                <div class="top-right">
+                    <div class="top-score">96</div>
+                    <div class="top-players">12.8M тоглогч</div>
+                </div>
+            </div>
+            <div class="top-item fade-up" style="transition-delay:0.18s">
+                <div class="top-num">04</div>
+                <div class="top-info">
+                    <div class="top-name">Black Myth: Wukong</div>
+                    <div class="top-meta">Game Science • 2024 • Action RPG</div>
+                </div>
+                <div class="top-right">
+                    <div class="top-score">94</div>
+                    <div class="top-players">20.4M тоглогч</div>
+                </div>
+            </div>
+            <div class="top-item fade-up" style="transition-delay:0.24s">
+                <div class="top-num">05</div>
+                <div class="top-info">
+                    <div class="top-name">Red Dead Redemption 2</div>
+                    <div class="top-meta">Rockstar • 2018 • Open World</div>
+                </div>
+                <div class="top-right">
+                    <div class="top-score">97</div>
+                    <div class="top-players">44.0M тоглогч</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- turluud -->
+<section id="genres-platforms">
+    <div class="container">
+        <div class="gp-grid">
+            <div>
+                <div class="sec-eyebrow fade-up" id="genres">Explore</div>
+                <h2 class="sec-title fade-up" style="margin-bottom:40px">Төрөл зүйл</h2>
+                <div class="genre-grid">
+                    <div class="genre-item fade-up" style="transition-delay:0s"><div class="genre-name">Action</div><div class="genre-count">1,284 тоглоом</div></div>
+                    <div class="genre-item fade-up" style="transition-delay:0.05s"><div class="genre-name">RPG</div><div class="genre-count">987 тоглоом</div></div>
+                    <div class="genre-item fade-up" style="transition-delay:0.1s"><div class="genre-name">Shooter</div><div class="genre-count">742 тоглоом</div></div>
+                    <div class="genre-item fade-up" style="transition-delay:0.15s"><div class="genre-name">Open World</div><div class="genre-count">563 тоглоом</div></div>
+                    <div class="genre-item fade-up" style="transition-delay:0.2s"><div class="genre-name">Strategy</div><div class="genre-count">412 тоглоом</div></div>
+                    <div class="genre-item fade-up" style="transition-delay:0.25s"><div class="genre-name">Sports</div><div class="genre-count">328 тоглоом</div></div>
+                </div>
+            </div>
+            <div id="platforms">
+                <div class="sec-eyebrow fade-up">Platforms</div>
+                <h2 class="sec-title fade-up" style="margin-bottom:40px">Платформ</h2>
+                <div class="platform-list">
+                    <div class="platform-item fade-up">
+                        <div class="platform-left">
+                            <div class="platform-icon"><i class="fa-brands fa-windows"></i></div>
+                            <div>
+                                <div class="platform-name">PC</div>
+                                <div class="platform-bar" style="width:160px"><div class="platform-bar-fill" style="width:82%"></div></div>
+                            </div>
+                        </div>
+                        <div class="platform-count">142k</div>
+                    </div>
+                    <div class="platform-item fade-up" style="transition-delay:0.05s">
+                        <div class="platform-left">
+                            <div class="platform-icon"><i class="fa-brands fa-playstation"></i></div>
+                            <div>
+                                <div class="platform-name">PlayStation 5</div>
+                                <div class="platform-bar" style="width:160px"><div class="platform-bar-fill" style="width:62%"></div></div>
+                            </div>
+                        </div>
+                        <div class="platform-count">89k</div>
+                    </div>
+                    <div class="platform-item fade-up" style="transition-delay:0.1s">
+                        <div class="platform-left">
+                            <div class="platform-icon"><i class="fa-brands fa-xbox"></i></div>
+                            <div>
+                                <div class="platform-name">Xbox Series X</div>
+                                <div class="platform-bar" style="width:160px"><div class="platform-bar-fill" style="width:45%"></div></div>
+                            </div>
+                        </div>
+                        <div class="platform-count">64k</div>
+                    </div>
+                    <div class="platform-item fade-up" style="transition-delay:0.15s">
+                        <div class="platform-left">
+                            <div class="platform-icon" style="font-size:18px"><i class="fa-brands fa-nintendo-switch"></i></div>
+                            <div>
+                                <div class="platform-name">Nintendo Switch 2</div>
+                                <div class="platform-bar" style="width:160px"><div class="platform-bar-fill" style="width:31%"></div></div>
+                            </div>
+                        </div>
+                        <div class="platform-count">44k</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- neeltee hiih -->
+<section id="upcoming">
+    <div class="container">
+        <div class="sec-header fade-up">
+            <div>
+                <div class="sec-eyebrow">Coming Soon</div>
+                <h2 class="sec-title">Ирэхэд хүлээж буй тоглоомууд</h2>
+            </div>
+        </div>
+        <div class="upcoming-grid">
+            <div class="upcoming-card fade-up">
+                <div class="upcoming-bg" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/4/46/Grand_Theft_Auto_VI.png')"></div>
+                <div class="upcoming-overlay"></div>
+                <div class="upcoming-content">
+                    <div class="upcoming-date">May 15, 2026</div>
+                    <div class="upcoming-title">Grand Theft Auto VI</div>
+                    <div class="upcoming-dev">Rockstar Games</div>
+                    <div class="countdown" id="countdown1">
+                        <div class="countdown-unit"><div class="countdown-num" id="c1d">--</div><div class="countdown-label">Өдөр</div></div>
+                        <div class="countdown-unit"><div class="countdown-num" id="c1h">--</div><div class="countdown-label">Цаг</div></div>
+                        <div class="countdown-unit"><div class="countdown-num" id="c1m">--</div><div class="countdown-label">Мин</div></div>
+                        <div class="countdown-unit"><div class="countdown-num" id="c1s">--</div><div class="countdown-label">Сек</div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="upcoming-card fade-up" style="transition-delay:0.1s">
+                <div class="upcoming-bg" style="background-image: url('https://cdn.mos.cms.futurecdn.net/3Dwjn3RpGPViTwqUqj5Ltb.jpg')"></div>
+                <div class="upcoming-overlay"></div>
+                <div class="upcoming-content">
+                    <div class="upcoming-date">September 2026</div>
+                    <div class="upcoming-title">The Elder Scrolls VI</div>
+                    <div class="upcoming-dev">Bethesda Game Studios</div>
+                    <div class="countdown">
+                        <div class="countdown-unit"><div class="countdown-num" id="c2d">--</div><div class="countdown-label">Өдөр</div></div>
+                        <div class="countdown-unit"><div class="countdown-num" id="c2h">--</div><div class="countdown-label">Цаг</div></div>
+                        <div class="countdown-unit"><div class="countdown-num" id="c2m">--</div><div class="countdown-label">Мин</div></div>
+                        <div class="countdown-unit"><div class="countdown-num" id="c2s">--</div><div class="countdown-label">Сек</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- COMMUNITY -->
+<section id="community">
+    <div class="container">
+        <div class="community-inner">
+            <div class="community-orbs fade-up">
+                <div class="orb" style="width:70px;height:70px;top:30px;left:50px"><img src="https://i.pravatar.cc/70?img=1" alt=""></div>
+                <div class="orb" style="width:90px;height:90px;top:10px;left:180px"><img src="https://i.pravatar.cc/90?img=5" alt=""></div>
+                <div class="orb" style="width:60px;height:60px;top:60px;left:310px"><img src="https://i.pravatar.cc/60?img=9" alt=""></div>
+                <div class="orb" style="width:80px;height:80px;top:20px;left:420px"><img src="https://i.pravatar.cc/80?img=12" alt=""></div>
+                <div class="orb" style="width:65px;height:65px;top:55px;left:540px"><img src="https://i.pravatar.cc/65?img=3" alt=""></div>
+                <div class="orb" style="width:75px;height:75px;top:25px;left:640px"><img src="https://i.pravatar.cc/75?img=7" alt=""></div>
+                <div class="orb" style="width:55px;height:55px;top:50px;left:760px"><img src="https://i.pravatar.cc/55?img=16" alt=""></div>
+            </div>
+            <h2 class="community-title fade-up">Тоглогчдын<br>нийгэмлэг</h2>
+            <p class="community-desc fade-up">Монголын хамгийн идэвхтэй тоглоомын нийгэмлэгт нэгдэж, бусад тоглогчидтой холбогдоорой.</p>
+            <div class="community-nums fade-up">
+                <div><div class="comm-num">5</div><div class="comm-label">Нийт гишүүн</div></div>
+                <div><div class="comm-num"><span class="online-dot"></span>1</div><div class="comm-label">Одоо онлайн</div></div>
+                <div><div class="comm-num">0</div><div class="comm-label">Нийт пост</div></div>
+            </div>
+            <button class="cta-main fade-up" onclick="openLogin()" style="font-size:14px">
+                <i class="fa-solid fa-users" style="font-size:14px"></i>
+                Нийгэмлэгт нэгдэх
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- dood heseg -->
+<footer>
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <span class="logo-mark">NLD</span>
+            <div class="logo-sub">Next Level Daily</div>
+            <p>Монголын тоглоом сонирхогчдын №1 платформ. 2022 оноос хойш өдөр бүр шилдэг мэдээллийг хүргэж байна.</p>
+        </div>
+        <div class="footer-col">
+            <h5>Мэдээ</h5>
+            <a href="#">Тоглоомын мэдээ</a>
+            <a href="#">Ирэх тоглоомууд</a>
+            <a href="#">DLC & Update</a>
+            <a href="#">Esports</a>
+        </div>
+        <div class="footer-col">
+            <h5>Шүүмж</h5>
+            <a href="#">Шинэ шүүмж</a>
+            <a href="#">Топ шүүмж</a>
+            <a href="#">Video шүүмж</a>
+            <a href="#">Харьцуулалт</a>
+        </div>
+        <div class="footer-col">
+            <h5>Холбогдох</h5>
+            <a href="#">Discord</a>
+            <a href="#">Telegram</a>
+            <a href="#">Instagram</a>
+            <a href="#">YouTube</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="footer-copy">© 2026 NLD • Next Level Daily — Бүх эрх хуулиар хамгаалагдсан.</div>
+        <div class="footer-socials">
+            <a href="#"><i class="fa-brands fa-discord"></i></a>
+            <a href="#"><i class="fa-brands fa-telegram"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+    </div>
+</footer>
+
+<!-- GAME MODAL -->
+<div class="modal-bg" id="gameModal" onclick="closeModal()">
+    <div class="modal-box" onclick="event.stopPropagation()" style="max-width: 720px; border-radius: 28px;">
+        
+        <!-- Banner Image -->
+        <div id="modalImg" style="height: 380px; background-size: cover; background-position: center; position: relative;">
+            <div style="position:absolute; bottom:0; left:0; right:0; height: 140px; background: linear-gradient(to top, #0f0f0f, transparent);"></div>
+        </div>
+        
+        <div class="modal-body" style="padding: 32px 40px;">
+            
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 20px;">
+                <div>
+                    <div id="modalTitle" style="font-family: var(--font-head); font-size: 34px; font-weight: 800; line-height: 1.1;"></div>
+                    <div id="modalDev" style="font-family: var(--font-mono); font-size: 13px; color: var(--c); margin-top: 6px;"></div>
+                </div>
+                
+                <div style="text-align: right;">
+                    <div id="modalScore" style="font-family: var(--font-head); font-size: 62px; font-weight: 800; color: var(--c); line-height: 1;"></div>
+                    <div style="font-size: 11px; color: var(--text-muted); margin-top: -6px;">/10</div>
+                </div>
+            </div>
+            
+            <!-- Тоглох хугацаа -->
+            <div style="background: rgba(0,255,209,0.06); border-radius: 14px; padding: 14px 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px;">
+                <i class="fa-solid fa-clock" style="color: var(--c); font-size: 18px;"></i>
+                <div>
+                    <div style="font-size: 12px; color: var(--text-muted);">Тоглох хугацаа</div>
+                    <div id="modalPlaytime" style="font-size: 17px; font-weight: 700; color: #fff;"></div>
+                </div>
+            </div>
+            
+            <!-- Тайлбар -->
+            <div style="margin-bottom: 28px;">
+                <div style="font-size: 13px; color: var(--c); font-family: var(--font-mono); letter-spacing: 1px; margin-bottom: 8px;">ТАЙЛБАР</div>
+                <div id="modalDesc" style="font-size: 15.5px; line-height: 1.65; color: rgba(255,255,255,0.75);"></div>
+            </div>
+            
+            <div class="modal-actions" style="display: flex; gap: 12px;">
+                <button onclick="addToWishlist()" class="modal-btn-main" style="flex:1;">Wishlist нэмэх</button>
+                <button onclick="closeModal()" class="modal-btn-close" style="flex:1;">Хаах</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div class="login-modal" id="loginModal" onclick="closeLogin()">
+    <div class="login-box" onclick="event.stopPropagation()" style="position:relative">
+        <button class="login-close-btn" onclick="closeLogin()"><i class="fa-solid fa-xmark"></i></button>
+        <div class="login-logo">NLD</div>
+        <div class="login-sub">Next Level Daily</div>
+        <label class="login-label">И-мэйл</label>
+        <input type="email" class="login-input" value="player@nld.mn">
+        <label class="login-label">Нууц үг</label>
+        <input type="password" class="login-input" value="demo123">
+        <button class="login-submit" onclick="loginSuccess()">Нэвтрэх</button>
+    </div>
+</div>
+
+<!-- REGISTER MODAL -->
+<div class="login-modal" id="registerModal" onclick="closeRegister()">
+    <div class="login-box" onclick="event.stopPropagation()" style="position:relative">
+        <button class="login-close-btn" onclick="closeRegister()"><i class="fa-solid fa-xmark"></i></button>
+        <div class="login-logo">NLD</div>
+        <div class="login-sub">Next Level Daily</div>
+        <label class="login-label">Хэрэглэгчийн нэр</label>
+        <input type="text" class="login-input" placeholder="Таны нэр" value="PlayerOne">
+        <label class="login-label">И-мэйл</label>
+        <input type="email" class="login-input" value="player@nld.mn">
+        <label class="login-label">Нууц үг</label>
+        <input type="password" class="login-input" value="demo123">
+        <label class="login-label">Нууц үг давтах</label>
+        <input type="password" class="login-input" value="demo123">
+        <button class="login-submit" onclick="registerSuccess()">Бүртгүүлэх</button>
+        <div style="text-align:center; margin-top:16px; font-size:11px; color:var(--text-muted);">
+            Аль хэдийн бүртгэлтэй юу? <span onclick="closeRegister(); openLogin();" style="color:var(--c); cursor:pointer; text-decoration:underline;">Нэвтрэх</span>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+    <i class="fa-solid fa-check"></i>
+    Амжилттай нэгдлээ!
+</div>
+
+<script>
+    const GAMES = [
+    {
+        title: "Grand Theft Auto VI",
+        dev: "Rockstar Games • 2026",
+        score: "9.8",
+        img: "https://cdn.mos.cms.futurecdn.net/mbLdrkgwLV4gyX4dUir95n.jpg",
+        desc: "Дэлхийн хамгийн том нээлттэй ертөнцтэй тоглоом. Vice City хотод Jason болон Lucia нар хамтдаа гэмт хэрэгт оролцоно. Романтик хосын адал явдал, гайхалтай график, асар том ертөнц.",
+        playtime: "60 – 120 цаг (Story + GTA Online)"
+    },
+    {
+        title: "Black Myth: Wukong",
+        dev: "Game Science • 2024",
+        score: "9.4",
+        img: "https://gamingbolt.com/wp-content/uploads/2020/08/black-myth-wu-kong.jpg",
+        desc: "Хятадын домогт баатар Сун Вукуны тухай гайхалтай Action RPG. Дэлхийн хамгийн үзэсгэлэнтэй тулааны системтэй тоглоомуудын нэг.",
+        playtime: "25 – 35 цаг"
+    },
+    {
+        title: "Elden Ring: Shadow of the Erdtree",
+        dev: "FromSoftware • 2024",
+        score: "9.6",
+        img: "https://npr.brightspotcdn.com/dims3/default/strip/false/crop/3483x1959+0+0/resize/1100/quality/50/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2F0b%2F10%2F32d1d3cb4c27a50dbfa545cba9f5%2Fimage1.jpeg",
+        desc: "Elden Ring-ийн хамгийн том DLC. Шинэ дэлхий, 80 гаруй шинэ дайсан, 10 шинэ boss. Souls-like жанрын шилдэг бүтээл.",
+        playtime: "40 – 70 цаг"
+    },
+    {
+        title: "Helldivers 2",
+        dev: "Arrowhead Game Studios • 2024",
+        score: "8.9",
+        img: "https://images.squarespace-cdn.com/content/v1/55ef0e29e4b099e22cdc9eea/85b5c178-baf6-4542-971a-b5aabfbbfb69/Strike.jpg",
+        desc: "4 хүртэлх тоглогчтой кооператив 3rd-person shooter. Демократыг хамгаалахын тулд инээдтэй, хүнд тулаануудыг туулна.",
+        playtime: "Хязгааргүй (Co-op)"
+    },
+    {
+        title: "Stellar Blade 2",
+        dev: "Shift Up • 2026.02.14",
+        score: "9.7",
+        img: "https://gamingbolt.com/wp-content/uploads/2024/02/stellar-blade-image-6.jpg",
+        desc: "EVE буцаж ирлээ. Sci-fi Action тоглоом нь илүү том ертөнц, илүү гүнзгий түүх, илүү гоёмсог тулаантай.",
+        playtime: "30 – 40 цаг"
+    },
+    {
+        title: "Monster Hunter Wilds",
+        dev: "Capcom • 2026.02.28",
+        score: "9.5",
+        img: "https://images.squarespace-cdn.com/content/v1/5c95f8d416b640656eb7765a/1717112710304-A0NESUSNJQHRNWGCX6ZJ/monster+hunter+wilds.jpg?format=2500w",
+        desc: "Цаг агаарын динамик системтэй хамгийн том Monster Hunter. Wilds нь цуврал хэсгийн шинэ хамгийн дээд амжилт болно.",
+        playtime: "50 – 100+ цаг"
+    },
+    {
+        title: "Avowed",
+        dev: "Obsidian Entertainment • 2026.02.18",
+        score: "8.9",
+        img: "https://www.denofgeek.com/wp-content/uploads/2024/11/avowed.jpg?fit=2000%2C1125",
+        desc: "Pillars of Eternity ертөнцөд суурилсан first-person RPG. Obsidian-ийн хамгийн том төсөл, сонголт ихтэй, гүнзгий түүхтэй.",
+        playtime: "35 – 55 цаг"
+    }
+];
+
+    function showGame(i) {
+    const g = GAMES[i];
+    if (!g) return;
+
+    document.getElementById('modalImg').style.backgroundImage = `url('${g.img}')`;
+    document.getElementById('modalTitle').textContent = g.title;
+    document.getElementById('modalDev').textContent = g.dev;
+    document.getElementById('modalScore').textContent = g.score;
+    document.getElementById('modalDesc').textContent = g.desc;
+    document.getElementById('modalPlaytime').textContent = g.playtime;
+
+    document.getElementById('gameModal').classList.add('open');
+}
+
+function closeModal() {
+    document.getElementById('gameModal').classList.remove('open');
+}
+
+function addToWishlist() {
+    const toast = document.getElementById('toast');
+    toast.innerHTML = `<i class="fa-solid fa-check"></i> Wishlist-д нэмэгдлээ!`;
+    toast.style.background = '#00E5A0';
+    toast.style.color = '#000';
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 2400);
+}
+
+// === НЭВТРЭХ БОЛОН БҮРТГҮҮЛЭХ ФУНКЦҮҮД ===
+function openLogin() {
+    document.getElementById('loginModal').classList.add('open');
+}
+
+function closeLogin() {
+    document.getElementById('loginModal').classList.remove('open');
+}
+
+function loginSuccess() {
+    const toast = document.getElementById('toast');
+    toast.innerHTML = `<i class="fa-solid fa-check"></i> Амжилттай нэвтэрлээ!`;
+    toast.style.background = 'var(--c)';
+    toast.style.color = '#000';
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+        closeLogin();
+    }, 2400);
+}
+
+function openRegister() {
+    document.getElementById('registerModal').classList.add('open');
+}
+
+function closeRegister() {
+    document.getElementById('registerModal').classList.remove('open');
+}
+
+function registerSuccess() {
+    const toast = document.getElementById('toast');
+    toast.innerHTML = `<i class="fa-solid fa-check"></i> Бүртгэл амжилттай боллоо!`;
+    toast.style.background = '#00E5A0';
+    toast.style.color = '#000';
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+        closeRegister();
+        // Автоматаар нэвтрэх цонх нээх
+        setTimeout(() => {
+            openLogin();
+        }, 600);
+    }, 2200);
+}
+
+    // БУРГЕР ЦЭС (мобиль цэс)
+    let menuOpen = false;
+
+    function toggleMenu() {
+        menuOpen = !menuOpen;
+        const btn = document.getElementById('burgerBtn');
+        const menu = document.getElementById('mobileMenu');
+        btn.classList.toggle('open', menuOpen);
+        menu.classList.toggle('open', menuOpen);
+        document.body.style.overflow = menuOpen ? 'hidden' : '';
+    }
+
+    function closeMenu() {
+        menuOpen = false;
+        document.getElementById('burgerBtn').classList.remove('open');
+        document.getElementById('mobileMenu').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    // ESC товчоор цэс хаах
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeMenu();
+    });
+
+    // Хугацаа тоолох функц (countdown)
+    function updateCountdowns() {
+        const now = new Date();
+        const t1 = new Date('2026-11-19T00:00:00');
+        const d1 = t1 - now;
+        if (d1 > 0) {
+            document.getElementById('c1d').textContent = String(Math.floor(d1/86400000)).padStart(2,'0');
+            document.getElementById('c1h').textContent = String(Math.floor((d1%86400000)/3600000)).padStart(2,'0');
+            document.getElementById('c1m').textContent = String(Math.floor((d1%3600000)/60000)).padStart(2,'0');
+            document.getElementById('c1s').textContent = String(Math.floor((d1%60000)/1000)).padStart(2,'0');
+        } else {
+            ['c1d','c1h','c1m','c1s'].forEach(id => document.getElementById(id).textContent = '00');
+        }
+        const t2 = new Date('2030-09-01T00:00:00');
+        const d2 = t2 - now;
+        if (d2 > 0) {
+            document.getElementById('c2d').textContent = String(Math.floor(d2/86400000)).padStart(2,'0');
+            document.getElementById('c2h').textContent = String(Math.floor((d2%86400000)/3600000)).padStart(2,'0');
+            document.getElementById('c2m').textContent = String(Math.floor((d2%3600000)/60000)).padStart(2,'0');
+            document.getElementById('c2s').textContent = String(Math.floor((d2%60000)/1000)).padStart(2,'0');
+        }
+    }
+    updateCountdowns();
+    setInterval(updateCountdowns, 1000);
+
+    // Хуудас гүйлгэх үед харагдах анимаци (fade-up)
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // Идэвхтэй навигаци (scroll spy)
+    window.addEventListener('scroll', () => {
+        const sections = document.querySelectorAll('section[id]');
+        let current = '';
+        sections.forEach(s => { if (scrollY >= s.offsetTop - 150) current = s.id; });
+        document.querySelectorAll('.nav-links a').forEach(a => {
+            a.style.color = a.getAttribute('href') === '#' + current ? 'var(--c)' : '';
+        });
+    });
+</script>
+</body>
+</html>
